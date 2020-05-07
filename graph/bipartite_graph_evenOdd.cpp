@@ -7,6 +7,7 @@ using itpl = tuple<int,int,int>;
 
 
 //https://atcoder.jp/contests/abc126/tasks/abc126_d
+//このコードではTLE
 vector<int> colors(100000,0);
 bool is_bipartite_graph(vector<itpl> edges, int v, int c){
     // v: node number, c: colorIndx 

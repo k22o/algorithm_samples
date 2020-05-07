@@ -5,54 +5,32 @@ using ll = long long int;
 #define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
 
 //https://atcoder.jp/contests/atc001/tasks/unionfind_a
-class Edge{
-    private:
-        int pre,post,weight;
-    public:
-        Edge(int _pre, int _post, int _weight){
-            this->pre = _pre;
-            this->post = _post;
-            this->weight = _weight;
-        };
-        ~Edge(){};
-        Edge(const Edge& o){
-            this->pre = o.pre;
-            this->post = o.post;
-            this->weight =o.weight; 
-        }; //コピーコンストラクタ
-
-        int get_pre(){return this->pre;};
-        int get_post(){return this->post;};
-        int get_weight(){return this->weight;};
-        bool operator<(const Edge& o) const{
-            return this->weight <o.weight;
-        };        
+struct Edge {
+    ll pre,post,weight;
+    bool operator<(const Edge& o) const{
+        return weight < o.weight;
+    }
 };
-
 
 class UnionFind{
     private:
-        int N;
-        vector<int> par;
-        vector<int> rank;
+        vector<ll> par,rank;
     public:
-        UnionFind(int _N){
-            this->N=_N;
-            for(int i=0;i<this->N;i++) this->par.push_back(i);
-            for(int i=0;i<this->N;i++) this->rank.push_back(0);
+        UnionFind(ll N):par(N),rank(N){
+            for(ll i=0;i<N;i++){par[i]=i;rank[i]=0;}
         };//constructer
     ~UnionFind(){};
-    int root(int x){
+    ll root(ll x){
         if(x==this->par[x]) return x;
         return root(this->par[x]);
     };
-    void unite(int x, int y){
-        int x_par = this->root(x);
-        int y_par = this->root(y);
+    void unite(ll x_ch, ll y_ch){
+        ll x = this->root(x_ch);
+        ll y = this->root(y_ch);
         if(x != y){
-            if(x<y) swap(x,y);
-            this->par[y_par] = x_par;
-            if(rank[x]==rank[y])rank[x]++;
+            if(this->rank[x]<this->rank[y]) this->par[x] = y;
+            else this->par[y] = x;
+            if(this->rank[x]==this->rank[y])this->rank[x]++;
         }
     };
 };
@@ -60,28 +38,25 @@ class UnionFind{
 
 int main(){
 
-    int N,Q;
+    int N,Q,tmp1,tmp2;
     cin >> N >> Q;
-    vector<int>P(Q,0);
-    vector<int>A(Q,0);
-    vector<int>B(Q,0);
-    for(int i=0;i<Q;i++) cin>>P[i]>>A[i]>>B[i];
     UnionFind tree(N);
     vector<Edge>edge_arr;
+
+    vector<int>P(Q,0);
     for(int i=0;i<Q;i++){
-        Edge tmp(A[i],B[i],1);
-        edge_arr.push_back(tmp);        
+        cin>>P[i]>>tmp1>>tmp2;
+        Edge tmp = {tmp1,tmp2,1};
+        edge_arr.emplace_back(tmp);        
     }
     
     for(int i=0;i<Q;i++){
         if(P[i]==0){
-            tree.unite(edge_arr[i].get_pre(), edge_arr[i].get_post());
+            tree.unite(edge_arr[i].pre, edge_arr[i].post);
         }
         else{
-            if(tree.root(edge_arr[i].get_pre())==tree.root(edge_arr[i].get_post())) cout<<"Yes"<< endl;
+            if(tree.root(edge_arr[i].pre)==tree.root(edge_arr[i].post)) cout<<"Yes"<< endl;
             else cout<<"No"<< endl;
-        }
-        
-    }
-    
+        }        
+    }    
 }

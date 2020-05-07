@@ -6,13 +6,13 @@ using ll = long long int;
 using ipair = std::pair<int,int>;
 
 
-vector<int> dijkstra(int V,int start, vector<int>u, vector<int>v, vector<int>w, int direct_flag){
+vector<int> dijkstra(int V,int start, vector<int>u, vector<int>v, vector<int>w){
     /*
     最短経路問題
     V: node_num 0~(v-1)
     u,v,w : u-> weight(w) ->v
     */
-    vector<int>dist(V,INF),pred(V);
+    vector<int>dist(V,INF),pred(V,INF);
     dist[start] = 0;
 
     priority_queue<ipair,vector<ipair>,greater<ipair>> que;
@@ -21,26 +21,13 @@ vector<int> dijkstra(int V,int start, vector<int>u, vector<int>v, vector<int>w, 
     while(!que.empty()){
         ipair top = que.top();
         que.pop();
-        cout << "top " << top.first << " idx "<<top.second << endl;
-        
+        //cout << "top " << top.first << " idx "<<top.second << endl;        
         for(int i=0;i<u.size();i++){
-            for(int direct=0;direct<direct_flag;direct++){
-                vector<int> pre,post;
-                if(direct==0){
-                    pre = u;
-                    post = v;
-                } 
-                else{
-                    pre = v;
-                    post = u;
-                } 
-
-                if(pre[i]==top.second && dist[post[i]]>dist[pre[i]]+w[i]){
-                    dist[post[i]] = dist[pre[i]] + w[i];
-                    pred[post[i]] = pre[i];
-                    que.push(make_pair(dist[pre[i]] + w[i],post[i])); 
-                    }
-            }
+            if(u[i]==top.second && dist[v[i]]>dist[u[i]]+w[i]){
+                dist[v[i]] = dist[u[i]] + w[i];
+                pred[v[i]] = u[i];
+                que.push(make_pair(dist[u[i]] + w[i],v[i])); 
+        }
         }
     }
     return dist;
@@ -51,9 +38,13 @@ int main(){
     cin >> n >> m >> s>> t;
     vector<int>u(m),v(m),w(m);// u -> w -> v
     for(int i=0;i<m;i++)cin >>u[i] >>v[i] >>w[i];
-    int direct_flag = 1;//1:単方向 2:双方向
     //transform(u.begin(),u.end(),u.begin(),[](int i){return i-1;});
     //transform(v.begin(),v.end(),v.begin(),[](int i){return i-1;});
-    vector<int>dist = dijkstra(n,s,u,v,w,direct_flag);
+    rep(i,0,m){
+        u.push_back(v[i]);
+        v.push_back(u[i]);
+        w.push_back(w[i]);
+    }
+    vector<int>dist = dijkstra(n,s,u,v,w);
     for(auto x :dist) cout << x << endl;
 }

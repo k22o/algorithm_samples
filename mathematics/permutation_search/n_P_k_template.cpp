@@ -13,9 +13,9 @@ int main(){
     vector<int> index_vec(k,0);
     iota(index_vec.begin(),index_vec.end(),1);
 
-    //nCkを実現
+    //nCkを実現 1-Nの中から　k個数を選ぶ
     while(1){
-        // nPkを実現　- 処理を書く
+        // nPkを実現　- 選んだものを並べ替える
         do{
             for(auto x:index_vec) cout << x << " ";
             cout << endl;

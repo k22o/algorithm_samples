@@ -42,6 +42,10 @@ int combination(int n, int k){
     return factral(n)/(factral(k)*factral(n-k));
 }
 
+int dup_combination(int n,int k){ //nHk
+    return combination(n+k-1,k);
+}
+
 //素因数分解
 vector<int> prime_factorization(int a){
     vector<int> ans;

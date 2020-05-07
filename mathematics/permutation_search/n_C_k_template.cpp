@@ -13,7 +13,7 @@ int main(){
     vector<int> index_vec(k,0);
     iota(index_vec.begin(),index_vec.end(),1);
 
-    //nCkを実現
+    //nCkを実現 1-Nからk個を選ぶ
     while(1){
 
         for(auto x:index_vec) cout << x << " ";

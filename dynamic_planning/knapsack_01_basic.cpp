@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long int;
-#define INF 100000000
 #define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
 
 //http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_1_B&lang=jp
