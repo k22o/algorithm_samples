@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long int;
-#define INF 10000000;
+#define INF 10000000
 #define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
 
 //https://atcoder.jp/contests/maximum-cup-2018/tasks/maximum_cup_2018_d

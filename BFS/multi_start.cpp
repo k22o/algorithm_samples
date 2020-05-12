@@ -3,41 +3,38 @@ using namespace std;
 #define INF 100000000
 #define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
 using ll = long long int;
-using ipair = pair<int,int>;
+using itpl = tuple<int,int,int>;
+int wi[4] = {0,-1,0,1};
+int hi[4] = {-1,0,1,0};
 
-//https://atcoder.jp/contests/joi2011yo/tasks/joi2011yo_e
+//https://atcoder.jp/contests/agc033/tasks/agc033_a
 int main(){
     int H,W,cnt=0;
     cin >> H >> W;
-    vector<vector<char>> s(H,vector<char> (W,'a'));
-    string c = "";
-    vector<int> check(H*W,0);
-    rep(i,0,H){rep(j,0,W) cin >> s[i][j];}
-    rep(i,0,H){rep(j,0,W){c +=s[i][j];}}
-
-    queue<ipair> q;
-    rep(i,0,c.size()){
-        if(c[i]== '#') q.push(make_pair(i,0));
+    vector<vector<char>> c(H,vector<char> (W,'a'));
+    string S;
+    vector<vector<int>> check(H,vector<int>(W,0));
+    rep(i,0,H){
+        cin >> S;
+        rep(j,0,W) c[i][j]=S[j];
     }
 
-    ipair tops;
+    queue<itpl> q;
+    rep(i,0,H) rep(j,0,W) if(c[i][j]== '#') q.push(make_tuple(j,i,0));        
+
+    int now_x,now_y,now_dist;
     while (!q.empty()){
-        tops = q.front();
-        int top = tops.first;
+        tie(now_x,now_y,now_dist) = q.front();
         q.pop();
-        for(int iy=-1;iy<=1;iy++){
-            if((top<W*1 && iy==-1)||(top>=(H-1)*W && iy==1)) continue;
-            for(int ix=-1;ix<=1;ix++){
-                if((top%W==0 && ix ==-1) || (top%W==W-1 && ix == 1)) continue;
-                if(iy*ix != 0 || (iy==0 && ix==0)) continue;
-                int idx = top + iy*W + ix;
-                if(c[idx]=='.'){
-                    cout << top <<" " << idx << " " << tops.second+1 << endl;
-                    q.push(make_pair(idx,tops.second+1));
-                    c[idx] = '#';
-                }
+        for(int moveIdx=0;moveIdx<4;moveIdx++){
+            int x = now_x + wi[moveIdx];
+            int y = now_y + hi[moveIdx];
+            if(x<0||x>=W||y<0||y>=H) continue;
+            if(c[y][x]=='.'){
+                q.push(make_tuple(x,y,now_dist+1));
+                c[y][x] = '#';
             }
         }
     }
-    cout << tops.second<<endl;
+    cout << now_dist << endl;
 }
