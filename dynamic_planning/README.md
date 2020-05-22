@@ -19,7 +19,10 @@
 ### partial_sum_problem.cpp<br>
 部分和問題(いくつかの数を選んでNにできるか)<br>
 DPの値にbool以上の判定要素を書き込んでいく
-
 ### LIS.cpp<br>
 最小増加部分列問題．2次元DPを用いず，
 1次元配列と二分探索により，O(NlogN)での計算が可能．
+### inteval_dp.cpp<br>
+区間DP．数列や文字列を内部から削除していく場合などに利用(O(N^3))．<br>
+### tree_dp.cpp<br>
+木構造を利用したDP.

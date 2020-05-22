@@ -1,51 +1,63 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long int;
-#define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
+#define rep(i,a,b) for(ll(i)=a;(i)<(ll)(b);(i)++)
 #define INF 100000000
 
+
 //https://atcoder.jp/contests/abc073/tasks/abc073_d
-vector<vector<ll>> warshall_floyd(int V, vector<int>u, vector<int>v, vector<ll>w, int direct_flag){
+vector<ll> u,v,w;
+vector<vector<ll>> dist;
+void warshall_floyd(ll V){
     /*
     全経路での最短経路問題
     V: node_num 0~(v-1)
     u,v,w : u-> weight(w) ->v
     */
-    vector<vector<ll>> dist(V,vector<ll>(V,INF));
-    for(int i=0;i<V;i++) dist[i][i] = 0;
-    for(int i=0;i<u.size();i++){
+    for(ll i=0;i<V;i++) dist[i][i] = 0;
+    for(ll i=0;i<u.size();i++){
         dist[u[i]][v[i]] = w[i];       
-        if(direct_flag==2) dist[v[i]][u[i]] = w[i];       
     }
 
-    for(int k=0;k<V;k++){
-        for(int i=0;i<V;i++){
-            for( int j=0;j<V;j++){
+    for(ll k=0;k<V;k++){
+        for(ll i=0;i<V;i++){
+            for( ll j=0;j<V;j++){
                 dist[i][j] = min(dist[i][j],dist[i][k]+dist[k][j]);
             }
         }
     }  
-    return dist;
 }
 
 
 int main(){
-    int n,m,R;// Node num, Edge num
+    ll n,m,R,tmpu,tmpv,tmpw;// Node num, Edge num
     cin >> n >> m >> R;
-    vector<int>u(m),v(m),r(R);
-    vector<ll>w(m);// u -> w -> v
+
+    dist.assign(n,vector<ll>(n,INF));
+    u.assign(2*m,0);
+    v.assign(2*m,0);
+    w.assign(2*m,0);
+
+    vector<ll>r(R);
     rep(i,0,R) cin >> r[i];
+    transform(r.begin(),r.end(),r.begin(),[](ll i){return i-1;});
     sort(r.begin(), r.end());
-    rep(i,0,m)cin >>u[i] >>v[i] >>w[i];
-    int direct_flag = 2;//1:単方向 2:双方向
-    transform(u.begin(),u.end(),u.begin(),[](int i){return i-1;});
-    transform(v.begin(),v.end(),v.begin(),[](int i){return i-1;});
-    transform(r.begin(),r.end(),r.begin(),[](int i){return i-1;});
-    vector<vector<ll>>dist = warshall_floyd(n,u,v,w,direct_flag);
+
+    rep(i,0,m){
+        cin >> tmpu >> tmpv >> tmpw;
+        u[i] = tmpu -1;
+        v[i] = tmpv -1;
+        w[i] = tmpw;
+        u[i+m] = tmpv -1;
+        v[i+m] = tmpu -1;
+        w[i+m] = tmpw;
+    }
+
+    warshall_floyd(n);
     /*
     cout << "---------------" << endl;
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
+    for(ll i=0;i<n;i++){
+        for(ll j=0;j<n;j++){
             cout << dist[i][j] << " ";
         }    
         cout << endl;
@@ -54,7 +66,7 @@ int main(){
     ll ans = INF;
     do{
         ll tmp = 0;
-        for(int i=0;i<r.size()-1;i++) tmp += dist[r[i]][r[i+1]];
+        for(ll i=0;i<r.size()-1;i++) tmp += dist[r[i]][r[i+1]];
         if(tmp<ans) ans = tmp;
     }while(next_permutation(r.begin(),r.end()));
 
