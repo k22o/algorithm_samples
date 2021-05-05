@@ -4,24 +4,30 @@ using ll = long long int;
 #define INF 100000000
 #define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
 
+/*
+区間の終端 (もしくは始端) でソートして選択していく
+*/
+
 
 //https://atcoder.jp/contests/keyence2020/tasks/keyence2020_b
 int main(){
-    int N,ans=0;
+    int N;
     cin >> N;
     vector<int> X(N,0),L(N,0);
-    vector<pair<int,int>> range(N);
+    vector<pair<int,int>> interval(N);
     rep(i,0,N) cin >> X[i] >> L[i];
     rep(i,0,N) {
-        range[i].first = X[i] + L[i];
-        range[i].second = X[i] - L[i];
+        interval[i].first = X[i] + L[i];
+        interval[i].second = X[i] - L[i];
     }
+
+    int ans = 0;
     int cur = -1*INF;
-    sort(range.begin(),range.end(),less<pair<int,int>>());
-    for(int i=0;i<N;i++){
-        if(cur<=range[i].second){
+    sort(interval.begin(),interval.end(),less<pair<int,int>>());
+    rep(i,0,N){
+        if(cur<=interval[i].second){
             ans ++;
-            cur = range[i].first;
+            cur = interval[i].first;
         }
     }
     cout << ans << endl;

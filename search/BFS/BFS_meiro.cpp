@@ -3,43 +3,49 @@ using namespace std;
 #define INF 100000000
 #define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
 using ll = long long int;
-using itpl = tuple<int,int,int>;
-int wi[4] = {0,-1,0,1};
-int hi[4] = {-1,0,1,0};
+using ipair = pair<int,int>;
 
 //https://atcoder.jp/contests/abc007/tasks/abc007_3
 int main(){
+
     int R,C,sy,sx,gy,gx;
-    string S;
     cin >> R >> C >> sy>> sx >> gy >> gx;
     sx --;sy --;gx --;gy --;
-    vector<vector<char>> c(R,vector<char> (C,'a'));
-    vector<vector<int>> check(R,vector<int>(C,0));
-    rep(i,0,R){
-        cin >> S;
-        rep(j,0,C) c[i][j] = S[j];
-    }
-    
-    queue<itpl> q;    
-    q.push(make_tuple(sx,sy,0));
-    check[sy][sx] = 1;
 
-    while (!q.empty()){
-        int now_x,now_y,now_dist;
-        tie(now_x,now_y,now_dist) = q.front();
+    vector<vector<char>> c(R,vector<char> (C,'a'));
+    vector<vector<int>> shortest(R,vector<int>(C,INF));
+    rep(i,0,R){
+        string str;
+        cin >> str;
+        rep(j,0,C) c[i][j] = str[j];
+    }
+
+    queue<ipair> q;
+    q.push(make_pair(sx,sy));
+    shortest[sy][sx] = 0;
+
+    int ri[4] = {0,-1,0,1};
+    int ci[4] = {-1,0,1,0};
+
+    while(!q.empty()) {
+        int x,y;
+        tie(x,y) = q.front();
         q.pop();
-        if(now_x==gx && now_y==gy){
-            cout << now_dist << endl;
+        
+        if(x == gx && y == gy) {
             break;
         }
-        for(int moveIdx=0;moveIdx<4;moveIdx++){
-            int x = now_x + wi[moveIdx];
-            int y = now_y + hi[moveIdx];
-            if(x<0||x>=C||y<0||y>=R) continue;
-            if(c[y][x]=='.' && check[y][x]!=1){
-                q.push(make_tuple(x,y,now_dist+1));
-                check[y][x] = 1;
+
+        rep(moveIdx,0,4) {
+            int nx = x + ci[moveIdx];
+            int ny = y + ri[moveIdx];
+            if(nx<0||nx>=C||ny<0||ny>=R) continue;
+            if(c[ny][nx]=='.' && shortest[ny][nx] > shortest[y][x]+1) {
+                q.push(make_pair(nx,ny));
+                shortest[ny][nx] = shortest[y][x] + 1;
             }
-        }
-    }    
+        }        
+    }
+    cout << shortest[gy][gx] << endl;
+
 }
