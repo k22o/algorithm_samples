@@ -3,6 +3,7 @@ using namespace std;
 using ll = long long int;
 #define INF 100000000
 #define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
+
 //http://poj.org/problem?id=3253
 int main(){
     int N,tmp,top1,top2,cost=0;

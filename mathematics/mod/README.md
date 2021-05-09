@@ -1,7 +1,7 @@
 # mod
-### arithmetic_operation_mod.cpp<br>
-四則演算・累乗時のmod計算のテンプレ
-### comb_mod.cpp<br>
-combination時のmod計算のテンプレ
-### comb_mod_sample.cpp<br>
-重複組み合わせのサンプル
+- arithmetic_operation_mod.cpp
+    - 四則演算・累乗時のmod計算のテンプレ
+- comb_mod.cpp
+    - combination時のmod計算のテンプレ
+- comb_mod_sample.cpp
+    - 重複組み合わせのサンプル
