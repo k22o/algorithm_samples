@@ -4,6 +4,7 @@ using ll = long long int;
 #define INF 100000000
 #define rep(i,a,b) for(int (i)=a;(i)<(int)(b);(i)++)
 
+
 //https://atcoder.jp/contests/atc001/tasks/unionfind_a
 struct Edge {
     ll pre,post,weight;
@@ -11,6 +12,7 @@ struct Edge {
         return weight < o.weight;
     }
 };
+
 
 class UnionFind{
     private:
@@ -27,11 +29,27 @@ class UnionFind{
     void unite(ll x_ch, ll y_ch){
         ll x = this->root(x_ch);
         ll y = this->root(y_ch);
+        if(x==y) return 0; 
+
+        if(this->rank[x]<this->rank[y]){
+            this->par[x] = y;
+        }
+        else{
+            this->par[y] = x;
+            if(this->rank[x]==this->rank[y])this->rank[x]++;
+        }
+        /*
+        ll x = this->root(x_ch);
+        ll y = this->root(y_ch);
         if(x != y){
             if(this->rank[x]<this->rank[y]) this->par[x] = y;
             else this->par[y] = x;
             if(this->rank[x]==this->rank[y])this->rank[x]++;
         }
+        */
+    };
+    bool isEqualRoot(int x, int y){
+        return this->root(x) = this->root(y);
     };
 };
 
@@ -55,7 +73,8 @@ int main(){
             tree.unite(edge_arr[i].pre, edge_arr[i].post);
         }
         else{
-            if(tree.root(edge_arr[i].pre)==tree.root(edge_arr[i].post)) cout<<"Yes"<< endl;
+            //if(tree.root(edge_arr[i].pre)==tree.root(edge_arr[i].post)) cout<<"Yes"<< endl;
+            if(tree.isEqualRoot(edge_arr[i].pre,edge_arr[i].post)) cout<<"Yes"<< endl;
             else cout<<"No"<< endl;
         }        
     }    
